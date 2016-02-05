@@ -188,40 +188,29 @@ public class CoffeeMaker {
 		String [] items = {"Coffee", "Cream", "Sugar"};
 		System.out.println();
 		
-		//Begin game--------------------------------------------
 		while(true) {
 		
 			Room currentRoom = rooms[room_index];
 			
 			printRoomInfo(currentRoom);
-			
 			printInstructions();
 			String input = readInput();
 			System.out.println();
 		    
-		    if (input.equals("N")) {
+		    if (input.equals("N")) 
 		    	room_index = moveNorth(currentRoom, room_index);
-		    }
-		    else if (input.equals("S")) {
+		    else if (input.equals("S")) 
 		    	room_index = moveSouth(currentRoom, room_index);
-		    }
-		    else if (input.equals("L")) {
+		    else if (input.equals("L")) 
 		    	haveItems = lookForItems(currentRoom, haveItems);
-		    }
-		    
-		    else if (input.equals("H")) {
+		    else if (input.equals("H")) 
 		    	printHelpMenu();
-		    }
-		    
-		    else if (input.equals("I")) {
+		    else if (input.equals("I")) 
 		    	printInventory(haveItems);
-		    }
-		    else if (input.equals("D")) {
+		    else if (input.equals("D")) 
 		    	drink(haveItems);
-		    }
-		    else {
+		    else 
 		    	System.out.println("What?\n");
-		    }
 		
 		}
 	}
