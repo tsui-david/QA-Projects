@@ -1,5 +1,3 @@
-package cs1632;
-
 public class Room {
 	public String furnishing;
 	public String description;
@@ -48,10 +46,5 @@ public class Room {
 	public void setItem(String item) {
 		this.item = item;
 	}
-	
-	
-	
-	
-	
 	
 }
