@@ -200,10 +200,10 @@ public class CoffeeMaker {
 			String input = readInput();
 			System.out.println();
 		    
-		    if (input.equals("N")){
+		    if (input.equals("N")) {
 		    	room_index = moveNorth(currentRoom, room_index);
 		    }
-		    else if(input.equals("S")){
+		    else if (input.equals("S")) {
 		    	room_index = moveSouth(currentRoom, room_index);
 		    }
 		    else if (input.equals("L")) {
@@ -214,10 +214,10 @@ public class CoffeeMaker {
 		    	printHelpMenu();
 		    }
 		    
-		    else if(input.equals("I")) {
+		    else if (input.equals("I")) {
 		    	printInventory(haveItems);
 		    }
-		    else if(input.equals("D")) {
+		    else if (input.equals("D")) {
 		    	drink(haveItems);
 		    }
 		    else {
@@ -234,14 +234,18 @@ public class CoffeeMaker {
 		for(int i=0; i<rooms.length; i++) {
 			rooms[i] = new Room();
 		}
+		
 		//Set rooms with data
 		for(int i=0; i<rooms.length; i++) {
+		
 			rooms[i].setDescription(room_description[i]);
 			rooms[i].setFurnishing(furnishing[i]);
 			rooms[i].setItem(room_items[i]);
+			
 			//Set south room
 			if (i > 0) 
 				rooms[i].setSouth_room(rooms[i-1], south_door_description[i-1]);
+				
 			//Set north room
 			if (i < rooms.length-1) 
 				rooms[i].setNorth_room(rooms[i+1], north_door_description[i]);
