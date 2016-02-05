@@ -62,7 +62,6 @@ public class CoffeeMaker {
 	public static void drink(boolean [] haveItems) {
 		
 		printInventory(haveItems);
-		System.out.println();
 		
 		boolean hasCream = haveItems[0];
 		boolean hasCoffee = haveItems[1];
