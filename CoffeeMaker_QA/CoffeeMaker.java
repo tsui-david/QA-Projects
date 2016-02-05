@@ -129,10 +129,9 @@ public class CoffeeMaker {
 	}
 	
 	public static boolean [] lookForItems (Room currentRoom, boolean [] haveItems) {
-	
-		boolean hasCream = haveItems[0];
-		boolean hasCoffee = haveItems[1];
-		boolean hasSugar = haveItems[2];
+		
+		//Note that in the haveItems array, 
+		//hasCream = haveItems[0], hasCoffee = haveItems[1], and hasSugar = haveItems[2]
 	
 		if (currentRoom.getItem().equals("Nothing")) {
 		    	System.out.println("You don't see anything out of the ordinary.");
