@@ -19,6 +19,8 @@ public class CoffeeMaker {
 				
 	}
 	
+	
+	
 	private static void printInstructions() {
 		System.out.println("\nINSTRUCTIONS (N,S,L,I,D,H)>");
 	}
@@ -72,7 +74,7 @@ public class CoffeeMaker {
 			System.out.println("You win!");
 		}
 		else if (hasCream && hasSugar) {
-		    System.out.println("You drink the sweetned cream, but without caffeine, you cannot study.");
+		    System.out.println("You drink the sweetened cream, but without caffeine, you cannot study.");
 		    System.out.println("You lose!");
 		}
 		else if (hasCoffee && hasSugar) {
