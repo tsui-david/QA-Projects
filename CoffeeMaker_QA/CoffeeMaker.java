@@ -23,102 +23,49 @@ public class CoffeeMaker {
 				
 	}
 	
-	private static void printInstructions() {
-		System.out.println("\nINSTRUCTIONS (N,S,L,I,D,H)>");
-	}
-	
-	
 	public static String readInput() {
 		Scanner sc = new Scanner(System.in);
 		return sc.next().toUpperCase();
 	}
-	
-
-	
-	public static boolean [] lookForItems (Room currentRoom, boolean [] haveItems) {
 		
-		//Note that in the haveItems array, 
-		//hasCream = haveItems[0], hasCoffee = haveItems[1], and hasSugar = haveItems[2]
-	
-		Item roomObj = currentRoom.getItem();
-		String name = roomObj.getName();
-		
-		if (name.equals("Nothing")) {
-		    	System.out.println("You don't see anything out of the ordinary.");
-		}
-		
-	   	else {
-	   	
-		    System.out.println("There might be something here...");
-		    
-		    if (name.equals("Cream"))  {
-		    	System.out.println("You found some creamy cream!");
-		    	haveItems[0] = true;
-		    }
-	
-		    else if (name.equals("Coffee")) {
-		    	System.out.println("You found some caffeinated coffee.");
-		    	haveItems[1] = true;
-		    }
-		    
-		    else { 
-		    	System.out.println("You found some sweet sugar!");
-		    	haveItems[2] = true;
-		    }
-		}
-		
-		System.out.println();
-		
-		return haveItems;
-	}
-	
-	public static void printHelpMenu() {
-	
-		System.out.println("Commands to play the game (case-insensitive): ");
-		System.out.println("---------------------------");
-		System.out.println("Enter \"N\" to go north.");
-		System.out.println("Enter \"S\" to go south.");
-		System.out.println("Enter \"L\" to look for items in the room.");
-		System.out.println("Enter \"I\" to check your inventory.");
-		System.out.println("Enter \"H\" to see the help menu again.");
-		System.out.println("Enter \"D\" to drink.");
-		System.out.println();
-	}
-	
 	private static void playGame(Room [] rooms) {
 		
 		Room currentRoom = rooms[0];
-		
-		boolean hasCream = false;
-		boolean hasCoffee = false; 
-		boolean hasSugar = false;
-		boolean [] haveItems = {hasCream, hasCoffee, hasSugar};
 		
 		System.out.println();
 		
 		while(true) {
 		
-			
-			
 			currentRoom.printRoomInfo();
-			printInstructions();
+			Room.printInstructions();
 			String input = readInput();
-			System.out.println();
-		    
+			
+			
 		    if (input.equals("N")) 
-		    	if (currentRoom.moveNorth() != null)
-		    		currentRoom = currentRoom.moveNorth();
+		    	if (currentRoom.moveNorth() != null)  {
+		    		//System.out.println(55);
+		    		currentRoom = currentRoom.moveNorth();  
+		    	}
+		    	else 
+		    		System.out.println(44);
 		    else if (input.equals("S")) 
-		    	if (currentRoom.moveSouth() != null)
+		    	if (currentRoom.moveSouth() != null) {
+		    		//System.out.println(33);
 		    		currentRoom = currentRoom.moveSouth();
+		    		
+		    	}
+		    	else {
+		    		//System.out.println(22);
+		    	}
 		    else if (input.equals("L")) 
-		    	haveItems = lookForItems(currentRoom, haveItems);
+		    	currentRoom.lookForItems();
 		    else if (input.equals("H")) 
-		    	printHelpMenu();
-		    else if (input.equals("I")) 
-		    	currentRoom.printInventory(haveItems);
+		    	Room.printHelpMenu();
+		    else if (input.equals("I")) {
+		    	currentRoom.printInventory();
+		    }
 		    else if (input.equals("D")) {
-		    	currentRoom.drink(haveItems);
+		    	currentRoom.drink();
 		    	System.exit(0);
 		    }
 		    else 

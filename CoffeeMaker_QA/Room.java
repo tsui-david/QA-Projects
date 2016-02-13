@@ -1,20 +1,31 @@
 public class Room {
-	public static Furnishing furnishing;
-	public static String description;
-	public static Room south_room;
-	public static Room north_room;
-	public static DoorDescription north_room_door_description;
-	public static DoorDescription south_room_door_description;
+	public Furnishing furnishing;
+	public String description;
+	public Room south_room;
+	public Room north_room;
+	public DoorDescription north_room_door_description;
+	public DoorDescription south_room_door_description;
 	public Item item;
+	public static boolean [] items; //all the user's items
 	
+	public Room () {
+		items = new boolean[3];
+	}
 	
-	public static String getFurnishing() {
-		if (furnishing != null)
-			return furnishing.getName();
+	public String getFurnishing() {
+		if (this.furnishing != null)
+			return this.furnishing.getName();
 		return null;
 	}
 	
-
+	public boolean [] getItems() {
+		return items;
+	}
+	
+	public void setItems(boolean [] inputItems) {
+		items = inputItems;
+	}
+	
 	
 	public boolean setFurnishing(String furnishing) {
 		if (furnishing == null) return false;
@@ -30,7 +41,7 @@ public class Room {
 		this.description = description;
 		return true;
 	}
-	public static Room getSouth_room() {
+	public Room getSouth_room() {
 		return south_room;
 	}
 	public boolean setSouth_room(Room south_room, String south_room_description) {
@@ -44,7 +55,7 @@ public class Room {
 		return true;
 	}
 	
-	public static Room getNorth_room() {
+	public Room getNorth_room() {
 		return north_room;
 	}
 	public boolean setNorth_room(Room north_room, String north_room_description) {
@@ -56,11 +67,11 @@ public class Room {
 		this.north_room_door_description = newDescription;
 		return true;
 	}
-	public static DoorDescription getNorth_room_door_description() {
+	public DoorDescription getNorth_room_door_description() {
 		if (moveNorth() == null) return null;
 		return north_room_door_description;
 	}
-	public static DoorDescription getSouth_room_door_description() {
+	public DoorDescription getSouth_room_door_description() {
 		return south_room_door_description;
 	}
 
@@ -74,7 +85,7 @@ public class Room {
 		return true;
 	}
 	
-	public static void printRoomInfo() {
+	public void printRoomInfo() {
 		
 		System.out.println("You see a " + description + " room.");
 		System.out.println("It has a " + getFurnishing() + ".");
@@ -85,13 +96,13 @@ public class Room {
 			System.out.println("A "+ getSouth_room_door_description().description + " door leads South.");
 	}
 	
-	public boolean drink(boolean [] haveItems) {
+	public boolean drink() {
 		
-		printInventory(haveItems);
+		printInventory();
 		
-		boolean hasCream = haveItems[0];
-		boolean hasCoffee = haveItems[1];
-		boolean hasSugar = haveItems[2];
+		boolean hasCream = items[0];
+		boolean hasCoffee = items[1];
+		boolean hasSugar = items[2];
 		
 		if (hasCream && hasCoffee && hasSugar) {
 		    System.out.println("You drink the beverage and are ready to study!");
@@ -132,31 +143,33 @@ public class Room {
 		
 	}
 	
-	public static Room moveNorth() {
+	public Room moveNorth() {
 		
 		if (getNorth_room() == null) {
 			System.out.println("There is no door leading north.\n");
 			return null;
 		}
-		else 
+		else {
 			return north_room;
+		}
 	}
 	
-	public static Room moveSouth() {
+	public Room moveSouth() {
 		
 		if (getSouth_room() == null) {
 			System.out.println("There is no door leading south.\n");
 			return null;
 		}
-		else 
+		else {
 			return south_room;
+		}
 	}
 	
-	public void printInventory(boolean [] haveItems) {
+	public void printInventory() {
 		
-		boolean hasCream = haveItems[0];
-		boolean hasCoffee = haveItems[1];
-		boolean hasSugar = haveItems[2];
+		boolean hasCream = items[0];
+		boolean hasCoffee = items[1];
+		boolean hasSugar = items[2];
 		
 		
 		if (hasCoffee) 
@@ -177,5 +190,75 @@ public class Room {
 		System.out.println();
 	}
 	
+	//Returns true if returns new item
+	public boolean lookForItems () {
+		
+		//Note that in the haveItems array, 
+		//hasCream = haveItems[0], hasCoffee = haveItems[1], and hasSugar = haveItems[2]
+	
+		Item roomObj = getItem();
+		if (roomObj == null) return false;
+		String name = roomObj.getName();
+		boolean outcome = false;
+		
+		if (name.equals("Nothing")) {
+		    	System.out.println("You don't see anything out of the ordinary.");
+		    	outcome = false;
+		}
+		
+	   	else {
+	   	
+		    System.out.println("There might be something here...");
+		    
+		    if (name.equals("Cream"))  {
+		    	
+		    	//Didn't have cream before, now we found it
+		    	if (items[0] == false) {
+		    		outcome = true;
+		    	}
+		    	System.out.println("You found some creamy cream!");
+		    	items[0] = true;
+		    }
+	
+		    else if (name.equals("Coffee")) {
+		    	//Didn't have coffee before, now we found it
+		    	if (items[1] == false) {
+		    		outcome = true;
+		    	}
+		    	System.out.println("You found some caffeinated coffee.");
+		    	items[1] = true;
+		    }
+		    
+		    else { 
+		    	//Didn't have sugar before, now we found it
+		    	if (items[2] == false) {
+		    		outcome = true;
+		    	}
+		    	System.out.println("You found some sweet sugar!");
+		    	items[2] = true;
+		    }
+		}
+		
+		System.out.println();
+		
+		return outcome;
+	}
+	
+	public static void printInstructions() {
+		System.out.println("\nINSTRUCTIONS (N,S,L,I,D,H)>");
+	}
+	
+	public static void printHelpMenu() {
+		
+		System.out.println("Commands to play the game (case-insensitive): ");
+		System.out.println("---------------------------");
+		System.out.println("Enter \"N\" to go north.");
+		System.out.println("Enter \"S\" to go south.");
+		System.out.println("Enter \"L\" to look for items in the room.");
+		System.out.println("Enter \"I\" to check your inventory.");
+		System.out.println("Enter \"H\" to see the help menu again.");
+		System.out.println("Enter \"D\" to drink.");
+		System.out.println();
+	}
 	
 }
