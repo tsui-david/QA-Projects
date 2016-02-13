@@ -1,4 +1,8 @@
+import static org.junit.Assert.*;
+
 import java.util.Scanner;
+import org.junit.*;
+import org.mockito.*;
 
 public class CoffeeMaker {
 	
@@ -19,27 +23,17 @@ public class CoffeeMaker {
 				
 	}
 	
-	
-	
 	private static void printInstructions() {
 		System.out.println("\nINSTRUCTIONS (N,S,L,I,D,H)>");
 	}
+	
 	
 	public static String readInput() {
 		Scanner sc = new Scanner(System.in);
 		return sc.next().toUpperCase();
 	}
 	
-	public static void printRoomInfo(Room currentRoomentRoom) {
 	
-		System.out.println("You see a " + currentRoomentRoom.description + " room.");
-		System.out.println("It has a " + currentRoomentRoom.furnishing + ".");
-			
-		if (currentRoomentRoom.getNorth_room() != null) 
-			System.out.println("A "+ currentRoomentRoom.getNorth_room_door_description() + " door leads North.");
-		if (currentRoomentRoom.getSouth_room() != null) 
-			System.out.println("A "+ currentRoomentRoom.getSouth_room_door_description() + " door leads South.");
-	}
 	
 	public static int moveNorth(Room currentRoom, int room_index) {
 		
@@ -61,81 +55,20 @@ public class CoffeeMaker {
 			return room_index - 1;
 	}
 	
-	public static void drink(boolean [] haveItems) {
-		
-		printInventory(haveItems);
-		
-		boolean hasCream = haveItems[0];
-		boolean hasCoffee = haveItems[1];
-		boolean hasSugar = haveItems[2];
-		
-		if (hasCream && hasCoffee && hasSugar) {
-		    System.out.println("You drink the beverage and are ready to study!");
-			System.out.println("You win!");
-		}
-		else if (hasCream && hasSugar) {
-		    System.out.println("You drink the sweetened cream, but without caffeine, you cannot study.");
-		    System.out.println("You lose!");
-		}
-		else if (hasCoffee && hasSugar) {
-		    System.out.println("Without cream, you get an ulcer and cannot study.");
-			System.out.println("You lose!");
-		}
-		else if (hasCream && hasCoffee) {
-		    System.out.println("Without sugar, the coffee is too bitter. You cannot study.");
-			System.out.println("You lose!");
-		}
-		else if (hasCream) {
-		    System.out.println("You drink the cream, but without caffeine, you cannot study.");
-			System.out.println("You lose!");
-		}
-		else if (hasCoffee) {
-		    System.out.println("Without cream, you get an ulcer and cannot study.");
-			System.out.println("You lose!");
-		}
-		else if (hasSugar) {
-		    System.out.println("You eat the sugar, but without caffeine, you cannot study!");
-			System.out.println("You lose!");
-		}
-		else {
-		    System.out.println("You drink the air, as you have no coffee, sugar, or cream.");
-		    System.out.println("The air is invigorating, but not invigorating enough. You cannot study.");
-		    System.out.println("You lose!");
-		}
-		    
-		System.exit(0);
-	}
 	
-	public static void printInventory(boolean [] haveItems) {
 	
-		boolean hasCream = haveItems[0];
-		boolean hasCoffee = haveItems[1];
-		boolean hasSugar = haveItems[2];
-		
-		if (hasCoffee) 
-			System.out.println("You have a cup of delicious coffee.");
-		else 
-			System.out.println("YOU HAVE NO COFFEE!");
+
 	
-		if (hasCream) 
-			System.out.println("You have some fresh cream.");
-		else 
-			System.out.println("YOU HAVE NO CREAM!");
-		    	
-		if (hasSugar) 
-			System.out.println("You have some tasty sugar.");
-		else 
-			System.out.println("YOU HAVE NO SUGAR!");
-			
-		System.out.println();
-	}
 	
 	public static boolean [] lookForItems (Room currentRoom, boolean [] haveItems) {
 		
 		//Note that in the haveItems array, 
 		//hasCream = haveItems[0], hasCoffee = haveItems[1], and hasSugar = haveItems[2]
 	
-		if (currentRoom.getItem().equals("Nothing")) {
+		Item roomObj = currentRoom.getItem();
+		String name = roomObj.getName();
+		
+		if (name.equals("Nothing")) {
 		    	System.out.println("You don't see anything out of the ordinary.");
 		}
 		
@@ -143,12 +76,12 @@ public class CoffeeMaker {
 	   	
 		    System.out.println("There might be something here...");
 		    
-		    if (currentRoom.getItem().equals("Cream"))  {
+		    if (name.equals("Cream"))  {
 		    	System.out.println("You found some creamy cream!");
 		    	haveItems[0] = true;
 		    }
 	
-		    else if (currentRoom.getItem().equals("Coffee")) {
+		    else if (name.equals("Coffee")) {
 		    	System.out.println("You found some caffeinated coffee.");
 		    	haveItems[1] = true;
 		    }
@@ -186,14 +119,13 @@ public class CoffeeMaker {
 		boolean hasSugar = false;
 		boolean [] haveItems = {hasCream, hasCoffee, hasSugar};
 		
-		String [] items = {"Coffee", "Cream", "Sugar"};
 		System.out.println();
 		
 		while(true) {
 		
 			Room currentRoom = rooms[room_index];
 			
-			printRoomInfo(currentRoom);
+			currentRoom.printRoomInfo(currentRoom);
 			printInstructions();
 			String input = readInput();
 			System.out.println();
@@ -207,9 +139,13 @@ public class CoffeeMaker {
 		    else if (input.equals("H")) 
 		    	printHelpMenu();
 		    else if (input.equals("I")) 
-		    	printInventory(haveItems);
-		    else if (input.equals("D")) 
-		    	drink(haveItems);
+		    	currentRoom.printInventory(haveItems);
+		    else if (input.equals("D")) {
+		    	currentRoom.drink(haveItems);
+		    	System.out.println(currentRoom.getTestStatus());
+		    	if (!currentRoom.getTestStatus())
+		    		System.exit(0);
+		    }
 		    else 
 		    	System.out.println("What?\n");
 		
