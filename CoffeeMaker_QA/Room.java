@@ -1,14 +1,14 @@
 public class Room {
-	public Furnishing furnishing;
-	public String description;
-	public Room south_room;
-	public Room north_room;
-	public DoorDescription north_room_door_description;
-	public DoorDescription south_room_door_description;
+	public static Furnishing furnishing;
+	public static String description;
+	public static Room south_room;
+	public static Room north_room;
+	public static DoorDescription north_room_door_description;
+	public static DoorDescription south_room_door_description;
 	public Item item;
 	
 	
-	public String getFurnishing() {
+	public static String getFurnishing() {
 		if (furnishing != null)
 			return furnishing.getName();
 		return null;
@@ -30,7 +30,7 @@ public class Room {
 		this.description = description;
 		return true;
 	}
-	public Room getSouth_room() {
+	public static Room getSouth_room() {
 		return south_room;
 	}
 	public boolean setSouth_room(Room south_room, String south_room_description) {
@@ -44,7 +44,7 @@ public class Room {
 		return true;
 	}
 	
-	public Room getNorth_room() {
+	public static Room getNorth_room() {
 		return north_room;
 	}
 	public boolean setNorth_room(Room north_room, String north_room_description) {
@@ -56,10 +56,11 @@ public class Room {
 		this.north_room_door_description = newDescription;
 		return true;
 	}
-	public DoorDescription getNorth_room_door_description() {
+	public static DoorDescription getNorth_room_door_description() {
+		if (moveNorth() == null) return null;
 		return north_room_door_description;
 	}
-	public DoorDescription getSouth_room_door_description() {
+	public static DoorDescription getSouth_room_door_description() {
 		return south_room_door_description;
 	}
 
@@ -73,15 +74,15 @@ public class Room {
 		return true;
 	}
 	
-	public void printRoomInfo(Room currentRoom) {
+	public static void printRoomInfo() {
 		
-		System.out.println("You see a " + currentRoom.description + " room.");
-		System.out.println("It has a " + currentRoom.getFurnishing() + ".");
+		System.out.println("You see a " + description + " room.");
+		System.out.println("It has a " + getFurnishing() + ".");
 			
-		if (currentRoom.getNorth_room() != null) 
-			System.out.println("A "+ currentRoom.getNorth_room_door_description().description + " door leads North.");
-		if (currentRoom.getSouth_room() != null) 
-			System.out.println("A "+ currentRoom.getSouth_room_door_description().description + " door leads South.");
+		if (getNorth_room() != null) 
+			System.out.println("A "+ getNorth_room_door_description().description + " door leads North.");
+		if (getSouth_room() != null) 
+			System.out.println("A "+ getSouth_room_door_description().description + " door leads South.");
 	}
 	
 	public boolean drink(boolean [] haveItems) {
@@ -129,6 +130,26 @@ public class Room {
 		   
 		return false;
 		
+	}
+	
+	public static Room moveNorth() {
+		
+		if (getNorth_room() == null) {
+			System.out.println("There is no door leading north.\n");
+			return null;
+		}
+		else 
+			return north_room;
+	}
+	
+	public static Room moveSouth() {
+		
+		if (getSouth_room() == null) {
+			System.out.println("There is no door leading south.\n");
+			return null;
+		}
+		else 
+			return south_room;
 	}
 	
 	public void printInventory(boolean [] haveItems) {

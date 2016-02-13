@@ -33,32 +33,7 @@ public class CoffeeMaker {
 		return sc.next().toUpperCase();
 	}
 	
-	
-	
-	public static int moveNorth(Room currentRoom, int room_index) {
-		
-		if (currentRoom.getNorth_room() == null) {
-			System.out.println("There is no door leading north.\n");
-			return room_index;
-		}
-		else 
-			return room_index + 1;
-	}
-	
-	public static int moveSouth(Room currentRoom, int room_index) {
-		
-		if (currentRoom.getSouth_room() == null) {
-			System.out.println("There is no door leading south.\n");
-			return room_index;
-		}
-		else 
-			return room_index - 1;
-	}
-	
-	
-	
 
-	
 	
 	public static boolean [] lookForItems (Room currentRoom, boolean [] haveItems) {
 		
@@ -112,7 +87,7 @@ public class CoffeeMaker {
 	
 	private static void playGame(Room [] rooms) {
 		
-		int room_index = 0;
+		Room currentRoom = rooms[0];
 		
 		boolean hasCream = false;
 		boolean hasCoffee = false; 
@@ -123,17 +98,19 @@ public class CoffeeMaker {
 		
 		while(true) {
 		
-			Room currentRoom = rooms[room_index];
 			
-			currentRoom.printRoomInfo(currentRoom);
+			
+			currentRoom.printRoomInfo();
 			printInstructions();
 			String input = readInput();
 			System.out.println();
 		    
 		    if (input.equals("N")) 
-		    	room_index = moveNorth(currentRoom, room_index);
+		    	if (currentRoom.moveNorth() != null)
+		    		currentRoom = currentRoom.moveNorth();
 		    else if (input.equals("S")) 
-		    	room_index = moveSouth(currentRoom, room_index);
+		    	if (currentRoom.moveSouth() != null)
+		    		currentRoom = currentRoom.moveSouth();
 		    else if (input.equals("L")) 
 		    	haveItems = lookForItems(currentRoom, haveItems);
 		    else if (input.equals("H")) 

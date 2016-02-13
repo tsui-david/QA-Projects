@@ -1,4 +1,6 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertNull;
 import java.util.*;
 
 import org.junit.*;
@@ -16,6 +18,17 @@ public class CoffeeMakerQuestTest {
 	@Test
 	public void assertCapitalization() {
 		assertEquals("A","a".toUpperCase());
+	}
+	
+	//Check if cannot move when no room ahead
+	@Test
+	public void testNoMove() {
+		Room newRoom = new Room();
+		Room northRoom = newRoom.moveNorth();
+		assertNull(northRoom);
+		
+		Room southRoom = newRoom.moveSouth();
+		assertNull(southRoom);
 	}
 	
 	//Check for win when the user
