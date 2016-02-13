@@ -142,9 +142,7 @@ public class CoffeeMaker {
 		    	currentRoom.printInventory(haveItems);
 		    else if (input.equals("D")) {
 		    	currentRoom.drink(haveItems);
-		    	System.out.println(currentRoom.getTestStatus());
-		    	if (!currentRoom.getTestStatus())
-		    		System.exit(0);
+		    	System.exit(0);
 		    }
 		    else 
 		    	System.out.println("What?\n");

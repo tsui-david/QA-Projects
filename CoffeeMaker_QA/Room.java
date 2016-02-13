@@ -6,7 +6,7 @@ public class Room {
 	public DoorDescription north_room_door_description;
 	public DoorDescription south_room_door_description;
 	public Item item;
-	private boolean isTest = false;
+	
 	
 	public String getFurnishing() {
 		if (furnishing != null)
@@ -14,15 +14,7 @@ public class Room {
 		return null;
 	}
 	
-	public boolean setTestStatus(boolean status) {
-		
-		this.isTest = status;
-		return true;
-	}
-	
-	public boolean getTestStatus() {
-		return this.isTest;
-	}
+
 	
 	public boolean setFurnishing(String furnishing) {
 		if (furnishing == null) return false;

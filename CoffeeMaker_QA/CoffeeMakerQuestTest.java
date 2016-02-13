@@ -19,7 +19,6 @@ public class CoffeeMakerQuestTest {
 		boolean [] items = {true, true, true};
 		
 		Room testRoom = new Room();
-		testRoom.setTestStatus(true);
 		
 		boolean win = testRoom.drink(items);
 		assertEquals(win, true);
@@ -70,8 +69,7 @@ public class CoffeeMakerQuestTest {
 		cases.add(arr6);
 		
 		Room testRoom = new Room();
-		testRoom.setTestStatus(true);
-		
+	
 		for (boolean [] arr: cases) {
 			assertEquals(testRoom.drink(arr), false);
 		}
