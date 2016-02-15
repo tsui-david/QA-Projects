@@ -14,16 +14,142 @@ public class CoffeeMakerQuestTest {
 		assertEquals("A","a".toUpperCase());
 	}
 	
-	
-	//Tests whether you find an item when it exists in a room
-	//@Test
-	public void findNewItem() {
+	//--------------------------------------------Room Tests-----------------------------------------------
+	//Test setting and getting decision for room
+	@Test
+	public void testDescriptionRoom() {
+		String s = null;
 		Room newRoom = new Room();
-		newRoom.setItem("Coffee");
+		boolean bool = newRoom.setDescription(s);
+		assertEquals(false,bool);
 		
-		assertEquals(newRoom.lookForItems(), true);
+		bool = newRoom.setDescription("");
+		assertEquals(true,bool);
+		
+		assertEquals("",newRoom.getDescription());
+	}
+	//Test setting and getting items for room 
+	@Test
+	public void testItemRoom() {
+		String s = null;
+		Room newRoom = new Room();
+		boolean bool = newRoom.setItem(s);
+		assertEquals(false,bool);
+		
+		bool = newRoom.setItem("");
+		assertEquals(true,bool);	
+		
+		Item testItem = newRoom.getItem();
+		assertEquals("",testItem.getName());
+	}
+
+	
+	//Tests setting and getting furnishing for room
+	@Test
+	public void testSetFurnishingRoom() {
+
+		String s = null;
+		Room newRoom = new Room();
+		boolean bool = newRoom.setFurnishing(s);
+		assertEquals(false,bool);
+		
+		assertNull(newRoom.getFurnishing());
+		
+		bool = newRoom.setFurnishing("");
+		assertEquals(true,bool);	
+		
+		String testFurnish = newRoom.getFurnishing();
+		assertEquals("",testFurnish);
+
 	}
 	
+	//Tests setting and getting boolean array for room
+	@Test
+	public void testItemsRoom() {
+		boolean[] b = {true,true,true};
+		Room newRoom = new Room();
+		newRoom.setItems(b);
+		boolean[] test = {true,true,true};
+		assertEquals(test[0],newRoom.getItems()[0]);
+		assertEquals(test[1],newRoom.getItems()[1]);	
+		assertEquals(test[2],newRoom.getItems()[2]);	
+	}
+	
+	//Test setting and getting north and south room for room
+	@Test
+	public void testDirectionRoom() {
+		
+		Room newRoom = new Room();
+		
+		boolean n = newRoom.setNorth_room(null, null);
+		boolean s = newRoom.setSouth_room(null, null);
+		
+		assertEquals(false,n);
+		assertEquals(false,s);
+		
+		Room south_room = new Room();
+		Room north_room = new Room();
+		
+		String description = "";
+		
+		//Test setters 
+		
+		 n = newRoom.setNorth_room(north_room, description);
+		 s = newRoom.setSouth_room(south_room, description);
+		
+		assertEquals(true,n);
+		assertEquals(true,s);
+		
+		 n = newRoom.setNorth_room(north_room, null);
+		 s = newRoom.setSouth_room(south_room, null);
+		
+		assertEquals(false,n);
+		assertEquals(false,s);
+		
+		 n = newRoom.setNorth_room(null, description);
+		 s = newRoom.setSouth_room(null, description);
+		
+
+		
+	}
+	//Test moving the room north and south
+	@Test
+	public void testMoveRoom() {
+		Room newRoom = new Room();
+		Room northRoom = new Room();
+		Room southRoom = new Room();
+		
+		
+		newRoom.setNorth_room(northRoom, "");
+		newRoom.setSouth_room(southRoom, "");
+		
+		Room n = newRoom.moveNorth();
+		Room s = newRoom.moveSouth();
+		
+		assertEquals(northRoom,n);
+		assertEquals(southRoom,s);
+	}
+	//Test getting and setting door description
+	@Test 
+	public void testDoorDescriptionRoom() {
+		Room newRoom = new Room();
+	
+		assertNull(newRoom.getNorth_room_door_description());
+		assertNull(newRoom.getSouth_room_door_description());
+		
+		String description = "";
+		// Test door description getters
+		Room north_room = new Room();
+		Room south_room = new Room();
+		
+		boolean n = newRoom.setNorth_room(north_room, description);
+		boolean s = newRoom.setSouth_room(south_room, description);
+		 
+		assertEquals("",newRoom.getNorth_room_door_description().getDescription());
+		assertEquals("",newRoom.getSouth_room_door_description().getDescription());
+		
+		
+	}
 	//Check if cannot move when no room ahead
 	@Test
 	public void testNoMove() {
@@ -35,6 +161,147 @@ public class CoffeeMakerQuestTest {
 		assertNull(southRoom);
 	}
 	
+	//Test looking for new items in room
+	@Test
+	public void testLookForItems() {
+		Room newRoom = new Room();
+		
+		boolean[] noItems = {false,false,false};
+		boolean[] hasCream = {true,false,false};
+		boolean[] hasCoffee = {false,true,false};
+		boolean[] hasSugar = {false,false,true};
+		
+		//Test null
+		Item testItem = null;
+		newRoom.item = testItem;
+		boolean outcome = newRoom.lookForItems();
+		assertEquals(false,outcome);
+		
+		//Test nothing
+		testItem = Mockito.mock(Item.class);
+		Mockito.when(testItem.getName()).thenReturn("Nothing");
+		
+		newRoom.item = testItem;
+		newRoom.items = noItems;
+		outcome = newRoom.lookForItems();
+		assertEquals(false,outcome);
+		
+		//Test cream
+		Mockito.when(testItem.getName()).thenReturn("Cream");	
+		newRoom.item = testItem;
+		
+		newRoom.items = noItems;
+		outcome = newRoom.lookForItems();
+		assertEquals(true,outcome);
+		
+		newRoom.items = hasCream;
+		outcome = newRoom.lookForItems();
+		assertEquals(false,outcome);
+		
+		newRoom.items = hasCoffee;
+		outcome = newRoom.lookForItems();
+		assertEquals(true,outcome);
+		
+		newRoom.items = hasSugar;
+		outcome = newRoom.lookForItems();
+		assertEquals(true,outcome);
+		
+		//Test coffee
+		Mockito.when(testItem.getName()).thenReturn("Coffee");	
+		newRoom.item = testItem;
+		
+		newRoom.items = noItems;
+		outcome = newRoom.lookForItems();
+		assertEquals(true,outcome);
+		
+		newRoom.items = hasCream;
+		outcome = newRoom.lookForItems();
+		assertEquals(true,outcome);
+		
+		newRoom.items = hasCoffee;
+		outcome = newRoom.lookForItems();
+		assertEquals(false,outcome);
+		
+		newRoom.items = hasSugar;
+		outcome = newRoom.lookForItems();
+		assertEquals(true,outcome);
+		
+		//Test sugar
+		Mockito.when(testItem.getName()).thenReturn("Sugar");	
+		newRoom.item = testItem;
+		
+		newRoom.items = noItems;
+		outcome = newRoom.lookForItems();
+		assertEquals(true,outcome);
+		
+		newRoom.items = hasCream;
+		outcome = newRoom.lookForItems();
+		assertEquals(true,outcome);
+		
+		newRoom.items = hasCoffee;
+		outcome = newRoom.lookForItems();
+		assertEquals(true,outcome);
+		
+		newRoom.items = hasSugar;
+		outcome = newRoom.lookForItems();
+		assertEquals(false,outcome);
+		
+	}
+	//-----------------------------------------Item Tests----------------------------------------------
+	//Test setting and getting the items
+	@Test
+	public void testItems() {
+		Item p = new Item(null);
+		boolean b = p.setName(null);
+		assertEquals(false,b);
+		
+		String s = p.getName();
+		assertNull(s);
+		
+		b = p.setName("");
+		assertEquals(true,b);
+		
+		s = p.getName();
+		assertEquals("",s);
+		
+		
+	}
+	//-----------------------------------------Furnishing Tests----------------------------------------------
+	//Test setting and getting the furnishing
+	@Test
+	public void testFurnishing() {
+		Furnishing p = new Furnishing(null);
+		boolean b = p.setName(null);
+		assertEquals(false,b);
+		
+		String s = p.getName();
+		assertNull(s);
+		
+		b = p.setName("");
+		assertEquals(true,b);
+		
+		s = p.getName();
+		assertEquals("",s);
+	}
+	//-----------------------------------------Door Description Tests----------------------------------------------
+	//Test setting and getting the door descriptions
+	@Test
+	public void testDoorDescription() {
+		DoorDescription p = new DoorDescription(null);
+		boolean b = p.setDescription(null);
+		assertEquals(false,b);
+		
+		String s = p.getDescription();
+		assertNull(s);
+		
+		b = p.setDescription("");
+		assertEquals(true,b);
+		
+		s = p.getDescription();
+		assertEquals("",s);
+	}
+	
+	//-----------------------------------------Requirement Tests----------------------------------------------
 	//Check for win when the user
 	//has collected all the items.
 	@Test
