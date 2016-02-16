@@ -331,7 +331,7 @@ public class CoffeeMakerQuestTest {
 	//Test whether command input is known
 	//Input "N","S","I","L","H","D" should return true at every room
 	public void testFunIteration() {
-		CoffeeMaker2 test = new CoffeeMaker2();
+		CoffeeMaker test = new CoffeeMaker();
 		test.setupCoffeeGame();
 		System.out.println(test.getCurrentRoom());
 		String[] input = {"N","S","I","L","H","D"};
@@ -350,7 +350,7 @@ public class CoffeeMakerQuestTest {
 	//Input to anything else besides "S","I","L","H","D" should return "What?\n"
 	@Test
 	public void testFunUnknownCommand() {
-		CoffeeMaker2 test = new CoffeeMaker2();
+		CoffeeMaker test = new CoffeeMaker();
 		test.setupCoffeeGame();
 		System.out.println(test.getCurrentRoom());
 		String[] input = {" ","-1","","a","A"};
@@ -370,7 +370,7 @@ public class CoffeeMakerQuestTest {
 	//Should have correct printout when "I" is inputted
 	@Test
 	public void testInventory() {
-		CoffeeMaker2 game = new CoffeeMaker2();
+		CoffeeMaker game = new CoffeeMaker();
 		Room mockRoom = new Room();
 		//Collected all the items
 		boolean[] b = {false,true,false};
@@ -426,7 +426,7 @@ public class CoffeeMakerQuestTest {
 	//Stubbed room to return next room
 	@Test
 	public void uniqueDescriptions() {
-		CoffeeMaker2 game = new CoffeeMaker2();
+		CoffeeMaker game = new CoffeeMaker();
 		game.setupCoffeeGame();
 		Room [] rooms = game.getRooms();
 		int index = 0;
@@ -453,7 +453,7 @@ public class CoffeeMakerQuestTest {
 	//Check if "L" command results in looking for items and adding them to inventory
 		@Test
 		public void checkLook() {
-			CoffeeMaker2 game = new CoffeeMaker2();
+			CoffeeMaker game = new CoffeeMaker();
 			game.setupCoffeeGame();
 			Room [] rooms = game.getRooms();
 			Random rand = new Random();
@@ -496,7 +496,7 @@ public class CoffeeMakerQuestTest {
 	@Test
 	public void uniqueFurnishings() {
 		
-		CoffeeMaker2 game = new CoffeeMaker2();
+		CoffeeMaker game = new CoffeeMaker();
 		game.setupCoffeeGame();
 		Room [] rooms = game.getRooms();
 		int index = 0;
@@ -523,7 +523,7 @@ public class CoffeeMakerQuestTest {
 	//what their effects are
 	@Test
 	public void checkHelp() {
-		CoffeeMaker2 game = new CoffeeMaker2();
+		CoffeeMaker game = new CoffeeMaker();
 		game.setupCoffeeGame();
 		final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(myOut));
@@ -556,7 +556,7 @@ public class CoffeeMakerQuestTest {
 		String data = "a";
 		System.setIn(new ByteArrayInputStream(data.getBytes()));
 		//Test lower case
-		CoffeeMaker2 test = new CoffeeMaker2();
+		CoffeeMaker test = new CoffeeMaker();
 		String s = test.readInput();
 		assertEquals("A",s);
 		
