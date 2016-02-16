@@ -22,14 +22,15 @@ public class CoffeeMaker2 {
 			System.exit(0);
 		}
 	
-		boolean gameState = true;
+		String gameState = "";
 		
-		while(gameState) {
+		while(gameState!=null) {
 		
 			game.getCurrentRoom().printRoomInfo();
+			game.getCurrentRoom().printInstructions();
 			String input = game.readInput();
 			
-			game.acceptCommands(input);
+			gameState = game.acceptCommands(input);
 		}
 		System.exit(0);
 	}
@@ -66,49 +67,51 @@ public class CoffeeMaker2 {
 	public Room getCurrentRoom() {
 		return currentRoom;
 	}
+
 	//Accept commands N, S, L, H, I, D
-	public boolean acceptCommands(String command) {
+	public String acceptCommands(String command) {
 		if(currentRoom!=null) {
 			if (command.equals("N")) {
 				if(currentRoom.moveNorth() != null)
 					currentRoom = currentRoom.moveNorth();
-				return true;
+				return "N";
 			}
 			
 			else if (command.equals("S")) {
 				if(currentRoom.moveSouth() != null)
 					currentRoom = currentRoom.moveNorth();
-				return true;
+				return "S";
 			}
 			
 			else if (command.equals("L")) {
 				currentRoom.lookForItems();
-				return true;
+				return "L";
 			}
 			
 			else if (command.equals("H")) {
 				Room.printHelpMenu();
-				return true;
+				return "H";
 			}
 			
 			else if (command.equals("I")) {
 				currentRoom.printInventory();
-				return true;
+				return "I";
 			}
 			
 			else if (command.equals("D")) {
 				currentRoom.drink();
-				return false;
+				return "D";
 			}
 			
 			else {
 				System.out.println("What?\n");
-				return true;
+				return "What?\n";
 			}
 			
 		}
-		return false;
+		return null;
 	}
+	
 	public boolean setCurrentRoom(int index) {
 		if (index > rooms.length-1) return false;
 		else currentRoom = rooms[index];
