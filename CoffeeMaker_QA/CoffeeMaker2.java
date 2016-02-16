@@ -34,7 +34,10 @@ public class CoffeeMaker2 {
 		}
 		System.exit(0);
 	}
-	
+
+	public Room[] getRooms() {
+		return rooms;
+	}
 	public boolean setupCoffeeGame() {
 		//Initialize rooms
 		for(int i=0; i<rooms.length; i++) {
@@ -70,7 +73,7 @@ public class CoffeeMaker2 {
 
 	//Accept commands N, S, L, H, I, D
 	public String acceptCommands(String command) {
-		if(currentRoom!=null) {
+
 			if (command.equals("N")) {
 				if(currentRoom.moveNorth() != null)
 					currentRoom = currentRoom.moveNorth();
@@ -108,8 +111,7 @@ public class CoffeeMaker2 {
 				return "What?\n";
 			}
 			
-		}
-		return null;
+	
 	}
 	
 	public boolean setCurrentRoom(int index) {
