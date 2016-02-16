@@ -423,6 +423,7 @@ public class CoffeeMakerQuestTest {
 	}
 	//Check that each room in the house has a unique description
 	//Uses hashmap to create a set of description check
+	//Stubbed room to return next room
 	@Test
 	public void uniqueDescriptions() {
 		CoffeeMaker2 game = new CoffeeMaker2();
@@ -491,6 +492,7 @@ public class CoffeeMakerQuestTest {
 		}
 
 		//Check that each room in the house has a unique furnishing
+		//Stubbed room to return next room
 		@Test
 		public void uniqueFurnishings() {
 			
