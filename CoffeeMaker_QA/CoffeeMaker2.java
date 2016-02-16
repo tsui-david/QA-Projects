@@ -34,7 +34,7 @@ public class CoffeeMaker2 {
 		System.exit(0);
 	}
 	
-	private boolean setupCoffeeGame() {
+	public boolean setupCoffeeGame() {
 		//Initialize rooms
 		for(int i=0; i<rooms.length; i++) {
 			rooms[i] = new Room();
@@ -109,5 +109,9 @@ public class CoffeeMaker2 {
 		}
 		return false;
 	}
-	
+	public boolean setCurrentRoom(int index) {
+		if (index > rooms.length-1) return false;
+		else currentRoom = rooms[index];
+		return true;
+	}
 }
