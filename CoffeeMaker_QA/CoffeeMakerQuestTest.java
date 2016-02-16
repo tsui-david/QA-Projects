@@ -322,18 +322,6 @@ public class CoffeeMakerQuestTest {
 	
 	}
 	
-	//Check for command "I" to show inventory,
-	// "L" to check the room for items, and 
-	// "H" for a help menu.
-	@Test
-	public void checkCommands() {
-		CoffeeMaker2 game = new CoffeeMaker2();
-		game.setupCoffeeGame();
-		assertEquals(game.acceptCommands("I"), "I");
-		assertEquals(game.acceptCommands("L"), "L");
-		assertEquals(game.acceptCommands("H"), "H");
-	}
-	
 	
 	//Check that each room in the house has a unique description
 	@Test
@@ -364,14 +352,18 @@ public class CoffeeMakerQuestTest {
 	//Check that each room in the house has a unique furnishing
 	@Test
 	public void uniqueFurnishings() {
+		
 		CoffeeMaker2 game = new CoffeeMaker2();
 		game.setupCoffeeGame();
-		Room currentRoom = game.getCurrentRoom();
+		Room [] rooms = game.getRooms();
+		int index = 0;
+		Room currentRoom = Mockito.mock(Room.class);
+		Mockito.when(currentRoom.moveNorth()).thenReturn(rooms[index]);
 		
 		HashMap <String, Integer> furnishings = new HashMap <String, Integer> ();
 		boolean unique = true;
 		
-		while (currentRoom.moveNorth() != null) {
+		while (index < rooms.length) {
 			if (furnishings.containsKey(currentRoom.getFurnishing())) {
 				unique = false;
 			}
@@ -379,8 +371,10 @@ public class CoffeeMakerQuestTest {
 				furnishings.put(currentRoom.getFurnishing(), 1);
 			}
 			currentRoom = currentRoom.moveNorth();
+			index++;
 		}
 		assertEquals(unique, true);
+
 	}
 	
 	/*
