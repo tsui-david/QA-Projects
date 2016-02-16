@@ -35,9 +35,12 @@ public class CoffeeMaker2 {
 		System.exit(0);
 	}
 
+	//Return array of Room classes. 
 	public Room[] getRooms() {
 		return rooms;
 	}
+	
+	//Initialize the game. Set up rooms, descriptions, furnishings, and items.
 	public boolean setupCoffeeGame() {
 		//Initialize rooms
 		for(int i=0; i<rooms.length; i++) {
@@ -63,10 +66,15 @@ public class CoffeeMaker2 {
 		currentRoom = rooms[0];
 		return true;
 	}
+	
+	
+	//Read user input in.
 	public  String readInput() {
 		Scanner sc = new Scanner(System.in);
 		return sc.next().toUpperCase();
 	}
+	
+	//Return the current room
 	public Room getCurrentRoom() {
 		return currentRoom;
 	}
@@ -114,6 +122,7 @@ public class CoffeeMaker2 {
 	
 	}
 	
+	//Set the current room variable using an index in the rooms array.
 	public boolean setCurrentRoom(int index) {
 		if (index > rooms.length-1) return false;
 		else currentRoom = rooms[index];
