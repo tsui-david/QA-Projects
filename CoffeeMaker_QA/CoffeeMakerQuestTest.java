@@ -493,32 +493,32 @@ public class CoffeeMakerQuestTest {
 
 		//Check that each room in the house has a unique furnishing
 		//Stubbed room to return next room
-		@Test
-		public void uniqueFurnishings() {
-			
-			CoffeeMaker2 game = new CoffeeMaker2();
-			game.setupCoffeeGame();
-			Room [] rooms = game.getRooms();
-			int index = 0;
-			Room currentRoom = Mockito.mock(Room.class);
-			Mockito.when(currentRoom.moveNorth()).thenReturn(rooms[index]);
-			
-			HashMap <String, Integer> furnishings = new HashMap <String, Integer> ();
-			boolean unique = true;
-			
-			while (index < rooms.length) {
-				if (furnishings.containsKey(currentRoom.getFurnishing())) {
-					unique = false;
-				}
-				else {
-					furnishings.put(currentRoom.getFurnishing(), 1);
-				}
-				currentRoom = currentRoom.moveNorth();
-				index++;
+	@Test
+	public void uniqueFurnishings() {
+		
+		CoffeeMaker2 game = new CoffeeMaker2();
+		game.setupCoffeeGame();
+		Room [] rooms = game.getRooms();
+		int index = 0;
+		Room currentRoom = Mockito.mock(Room.class);
+		Mockito.when(currentRoom.moveNorth()).thenReturn(rooms[index]);
+		
+		HashMap <String, Integer> furnishings = new HashMap <String, Integer> ();
+		boolean unique = true;
+		
+		while (index < rooms.length) {
+			if (furnishings.containsKey(currentRoom.getFurnishing())) {
+				unique = false;
 			}
-			assertEquals(unique, true);
-
+			else {
+				furnishings.put(currentRoom.getFurnishing(), 1);
+			}
+			currentRoom = currentRoom.moveNorth();
+			index++;
 		}
+		assertEquals(unique, true);
+
+	}
 	//Check if "H" command results in showing a listing of possible commands and
 	//what their effects are
 	@Test
