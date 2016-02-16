@@ -35,12 +35,9 @@ public class CoffeeMaker2 {
 		System.exit(0);
 	}
 
-	//Return array of Room classes. 
 	public Room[] getRooms() {
 		return rooms;
 	}
-	
-	//Initialize the game. Set up rooms, descriptions, furnishings, and items.
 	public boolean setupCoffeeGame() {
 		//Initialize rooms
 		for(int i=0; i<rooms.length; i++) {
@@ -51,30 +48,30 @@ public class CoffeeMaker2 {
 		for(int i=0; i<rooms.length; i++) {
 		
 			rooms[i].setDescription(room_description[i]);
-			rooms[i].setFurnishing(furnishing[i]);
-			rooms[i].setItem(room_items[i]);
+			Item it = new Item(room_items[i]);
+			Furnishing fu = new Furnishing(furnishing[i]);
+			
+			rooms[i].setFurnishing(fu);
+			rooms[i].setItem(it);
 			
 			//Set south room
-			if (i > 0) 
-				rooms[i].setSouth_room(rooms[i-1], south_door_description[i-1]);
-				
+			if (i > 0) {
+				DoorDescription southDD = new DoorDescription(south_door_description[i-1]);
+				rooms[i].setSouth_room(rooms[i-1], southDD);
+			}
 			//Set north room
-			if (i < rooms.length-1) 
-				rooms[i].setNorth_room(rooms[i+1], north_door_description[i]);
-			
+			if (i < rooms.length-1) {
+				DoorDescription northDD = new DoorDescription(north_door_description[i]);
+				rooms[i].setNorth_room(rooms[i+1], northDD);
+			}
 		}	
 		currentRoom = rooms[0];
 		return true;
 	}
-	
-	
-	//Read user input in.
 	public  String readInput() {
 		Scanner sc = new Scanner(System.in);
 		return sc.next().toUpperCase();
 	}
-	
-	//Return the current room
 	public Room getCurrentRoom() {
 		return currentRoom;
 	}
@@ -121,11 +118,10 @@ public class CoffeeMaker2 {
 			
 	
 	}
-	
-	//Set the current room variable using an index in the rooms array.
-	public boolean setCurrentRoom(int index) {
-		if (index > rooms.length-1) return false;
-		else currentRoom = rooms[index];
-		return true;
+
+	public void setCurrentRoom(Room mockRoom) {
+		currentRoom = mockRoom;
+		// TODO Auto-generated method stub
+		
 	}
 }
