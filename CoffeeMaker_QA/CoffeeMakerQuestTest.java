@@ -1,19 +1,14 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertNull;
+
+import java.io.ByteArrayInputStream;
 import java.util.*;
 
 import org.junit.*;
 import org.mockito.*;
 
 public class CoffeeMakerQuestTest {
-	
-	
-	//Asserts whether the scanned input capitalizes the string
-	@Test
-	public void assertCapitalization() {
-		assertEquals("A","a".toUpperCase());
-	}
 	
 	//--------------------------------------------Room Tests-----------------------------------------------
 	//Test setting and getting decision for room
@@ -302,24 +297,51 @@ public class CoffeeMakerQuestTest {
 		assertEquals("",s);
 	}
 	
+	
 	//-----------------------------------------Requirement Tests----------------------------------------------
 	
-	//Check for command "I" to show inventory,
-	// "L" to check the room for items, and 
-	// "H" for a help menu.
 	@Test
-	public void checkCommands() {
-		CoffeeMaker2 game = new CoffeeMaker2();
-		game.setupCoffeeGame();
-		assertEquals(game.acceptCommands("I"), "I");
-		assertEquals(game.acceptCommands("L"), "L");
-		assertEquals(game.acceptCommands("H"), "H");
+	public void testFunIteration() {
+		CoffeeMaker2 test = new CoffeeMaker2();
+		test.setupCoffeeGame();
+		System.out.println(test.getCurrentRoom());
+		String[] input = {"N","S","I","L","H","D"};
+		
+		
+		
+		for(String i:input) {
+			
+			String s = test.acceptCommands(i);
+			assertEquals(i,s);
+		}
+
 	}
-	
-	//Check for win when the user
-	//has collected all the items.
 	@Test
-	public void winTheGame() {
+	public void testFunUnknownCommand() {
+	
+	}
+	/*
+	//Test whether the system shall treat inputs as case insensitive
+	@Test 
+	public void testFunInputCapse() {
+		String data = "a";
+		System.setIn(new ByteArrayInputStream(data.getBytes()));
+		//Test lower case
+		CoffeeMaker test = new CoffeeMaker();
+		String s = test.readInput();
+		assertEquals("A",s);
+		
+		//Test upper case
+		data = "A";
+		System.setIn(new ByteArrayInputStream(data.getBytes()));
+		s = test.readInput();
+		assertEquals("A",s);
+
+	}
+	*/
+	//Check for win when the user has collected all items and drinks
+	@Test
+	public void testFunWin() {
 		boolean [] items = {true, true, true};
 		
 		Room testRoom = new Room();
@@ -329,55 +351,9 @@ public class CoffeeMakerQuestTest {
 		assertEquals(win, true);
 	}
 	
-	//Check that each room in the house has a unique description
+	//Check for lose when the user has not collected all items and drinks
 	@Test
-	public void uniqueDescriptions() {
-		CoffeeMaker2 game = new CoffeeMaker2();
-		game.setupCoffeeGame();
-		Room currentRoom = game.getCurrentRoom();
-		
-		HashMap <String, Integer> descriptions = new HashMap <String, Integer> ();
-		boolean unique = true;
-		
-		while (currentRoom.moveNorth() != null) {
-			if (descriptions.containsKey(currentRoom.getDescription())) {
-				unique = false;
-			}
-			else {
-				descriptions.put(currentRoom.getDescription(), 1);
-			}
-			currentRoom = currentRoom.moveNorth();
-		}
-		assertEquals(unique, true);
-	}
-	
-	//Check that each room in the house has a unique furnishing
-	@Test
-	public void uniqueFurnishings() {
-		CoffeeMaker2 game = new CoffeeMaker2();
-		game.setupCoffeeGame();
-		Room currentRoom = game.getCurrentRoom();
-		
-		HashMap <String, Integer> furnishings = new HashMap <String, Integer> ();
-		boolean unique = true;
-		
-		while (currentRoom.moveNorth() != null) {
-			if (furnishings.containsKey(currentRoom.getFurnishing())) {
-				unique = false;
-			}
-			else {
-				furnishings.put(currentRoom.getFurnishing(), 1);
-			}
-			currentRoom = currentRoom.moveNorth();
-		}
-		assertEquals(unique, true);
-	}
-	
-	//Check for items in all cases in 
-	//which the user has not collected
-	//all the items.
-	@Test
-	public void loseTheGame () {
+	public void testFunLose () {
 	
 		Room testRoom = new Room();
 		
