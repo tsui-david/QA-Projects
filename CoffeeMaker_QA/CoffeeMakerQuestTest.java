@@ -3,6 +3,8 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertNull;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.*;
 
 import org.junit.*;
@@ -11,7 +13,7 @@ import org.mockito.*;
 public class CoffeeMakerQuestTest {
 	
 	//--------------------------------------------Room Tests-----------------------------------------------
-	//Test setting and getting decision for room
+	//Test setting and getting description for room
 	@Test
 	public void testDescriptionRoom() {
 		String s = null;
@@ -114,7 +116,6 @@ public class CoffeeMakerQuestTest {
 		Room newRoom = new Room();
 		Room northRoom = new Room();
 		Room southRoom = new Room();
-		
 		
 		newRoom.setNorth_room(northRoom, "");
 		newRoom.setSouth_room(southRoom, "");
@@ -307,34 +308,20 @@ public class CoffeeMakerQuestTest {
 		System.out.println(test.getCurrentRoom());
 		String[] input = {"N","S","I","L","H","D"};
 		
-		Room[] rooms = test.getRooms();
-		for(int j = 0;j<rooms.length;j++) {
-			for(String i:input) {
-				
-				String s = test.acceptCommands(i);
-				test.setCurrentRoom(j);
-				assertEquals(i,s);
-			}
+		
+		
+		for(String i:input) {
+			
+			String s = test.acceptCommands(i);
+			assertEquals(i,s);
 		}
+
 	}
 	@Test
 	public void testFunUnknownCommand() {
-		CoffeeMaker2 test = new CoffeeMaker2();
-		test.setupCoffeeGame();
-		System.out.println(test.getCurrentRoom());
-		String[] input = {" ","-1","","a","A"};
-		
-		Room[] rooms = test.getRooms();
-		for(int j = 0;j<rooms.length;j++) {
-			for(String i:input) {
-				
-				String s = test.acceptCommands(i);
-				test.setCurrentRoom(j);
-				assertEquals("What?\n",s);
-			}
-		}
+	
 	}
-		
+	
 	//Check for command "I" to show inventory,
 	// "L" to check the room for items, and 
 	// "H" for a help menu.
@@ -347,17 +334,21 @@ public class CoffeeMakerQuestTest {
 		assertEquals(game.acceptCommands("H"), "H");
 	}
 	
+	
 	//Check that each room in the house has a unique description
 	@Test
 	public void uniqueDescriptions() {
 		CoffeeMaker2 game = new CoffeeMaker2();
 		game.setupCoffeeGame();
-		Room currentRoom = game.getCurrentRoom();
+		Room [] rooms = game.getRooms();
+		int index = 0;
+		Room currentRoom = Mockito.mock(Room.class);
+		Mockito.when(currentRoom.moveNorth()).thenReturn(rooms[index]);
 		
 		HashMap <String, Integer> descriptions = new HashMap <String, Integer> ();
 		boolean unique = true;
 		
-		while (currentRoom.moveNorth() != null) {
+		while (index < rooms.length) {
 			if (descriptions.containsKey(currentRoom.getDescription())) {
 				unique = false;
 			}
@@ -365,6 +356,7 @@ public class CoffeeMakerQuestTest {
 				descriptions.put(currentRoom.getDescription(), 1);
 			}
 			currentRoom = currentRoom.moveNorth();
+			index++;
 		}
 		assertEquals(unique, true);
 	}
@@ -473,5 +465,75 @@ public class CoffeeMakerQuestTest {
 		assertEquals(testRoom.drink(), false);
 		
 	}
+	
+	//Check if "L" command results in looking for items and adding them to inventory
+	@Test
+	public void checkLook() {
+		CoffeeMaker2 game = new CoffeeMaker2();
+		game.setupCoffeeGame();
+		Room [] rooms = game.getRooms();
+		Random rand = new Random();
+		game.setCurrentRoom(rand.nextInt(rooms.length));
+		final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(myOut));
+
+		game.acceptCommands("L");
+		final String testString = myOut.toString();
 		
+		final ByteArrayOutputStream proper = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(proper));
+		
+		Item roomObj = game.getCurrentRoom().getItem();
+		if (roomObj != null) {
+			String name = roomObj.getName();
+			if (name.equals("Nothing"))
+				System.out.println("You don't see anything out of the ordinary.");
+			else {
+				System.out.println("There might be something here...");
+			    if (name.equals("Cream"))  
+			    	System.out.println("You found some creamy cream!");
+			    else if (name.equals("Coffee")) 
+			    	System.out.println("You found some caffeinated coffee.");
+			    else 
+			    	System.out.println("You found some sweet sugar!");
+			}
+			    
+		}
+		
+		System.out.println();
+		
+		final String correctString = proper.toString();
+		
+		assertEquals(testString, correctString);
+	}
+	
+	//Check if "H" command results in showing a listing of possible commands and
+	//what their effects are
+	@Test
+	public void checkHelp() {
+		CoffeeMaker2 game = new CoffeeMaker2();
+		game.setupCoffeeGame();
+		final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(myOut));
+
+		game.acceptCommands("H");
+		final String testString = myOut.toString();
+		
+		final ByteArrayOutputStream proper = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(proper));
+		
+		System.out.println("Commands to play the game (case-insensitive): ");
+		System.out.println("---------------------------");
+		System.out.println("Enter \"N\" to go north.");
+		System.out.println("Enter \"S\" to go south.");
+		System.out.println("Enter \"L\" to look for items in the room.");
+		System.out.println("Enter \"I\" to check your inventory.");
+		System.out.println("Enter \"H\" to see the help menu again.");
+		System.out.println("Enter \"D\" to drink.");
+		System.out.println(); 
+		final String correctString = proper.toString();
+		
+		assertEquals(testString, correctString);
+	}
+
 }
