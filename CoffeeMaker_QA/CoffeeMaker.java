@@ -24,7 +24,7 @@ public class CoffeeMaker {
 	
 		String gameState = "";
 		
-		while(gameState!=null) {
+		while(gameState!=null && !gameState.equals("D")) {
 		
 			game.getCurrentRoom().printRoomInfo();
 			game.getCurrentRoom().printInstructions();
