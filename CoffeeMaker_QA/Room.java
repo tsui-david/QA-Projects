@@ -6,10 +6,9 @@ public class Room {
 	public DoorDescription north_room_door_description;
 	public DoorDescription south_room_door_description;
 	public Item item;
-	public static boolean [] items; //all the user's items
-	
+	public static boolean [] items = new boolean[3];
 	public Room () {
-		items = new boolean[3];
+		
 	}
 	
 	public String getFurnishing() {
@@ -27,10 +26,10 @@ public class Room {
 	}
 	
 	
-	public boolean setFurnishing(String furnishing) {
-		if (furnishing == null) return false;
-		this.furnishing = new Furnishing(furnishing);
-		return true;
+	public void setFurnishing(Furnishing f) {
+		
+		this.furnishing = f;
+	
 	}
 
 	public String getDescription() {
@@ -44,12 +43,12 @@ public class Room {
 	public Room getSouth_room() {
 		return south_room;
 	}
-	public boolean setSouth_room(Room south_room, String south_room_description) {
+	public boolean setSouth_room(Room south_room, DoorDescription south_room_description) {
 		
 		if (south_room == null || south_room_description == null) return false;
 		
 		this.south_room = south_room;
-		DoorDescription newDescription = new DoorDescription(south_room_description);
+		DoorDescription newDescription = south_room_description;
 		this.south_room_door_description = newDescription;
 		
 		return true;
@@ -58,12 +57,12 @@ public class Room {
 	public Room getNorth_room() {
 		return north_room;
 	}
-	public boolean setNorth_room(Room north_room, String north_room_description) {
+	public boolean setNorth_room(Room north_room, DoorDescription north_room_description) {
 		
 		if (north_room == null || north_room_description == null) return false;
 		
 		this.north_room = north_room;
-		DoorDescription newDescription = new DoorDescription(north_room_description);
+		DoorDescription newDescription = north_room_description;
 		this.north_room_door_description = newDescription;
 		return true;
 	}
@@ -78,11 +77,8 @@ public class Room {
 	public Item getItem() {
 		return item;
 	}
-	public boolean setItem(String item) {
-		if (item == null) return false;
-		Item newItem = new Item(item);
-		this.item = newItem;
-		return true;
+	public void setItem(Item i) {
+		item = i;
 	}
 	
 	public void printRoomInfo() {
