@@ -13,9 +13,13 @@ import org.mockito.*;
 public class CoffeeMakerQuestTest {
 	
 	//--------------------------------------------Room Tests-----------------------------------------------
+<<<<<<< HEAD
 	//Test setting and getting decision for room
 	//Null string setting should return false
 	//Non null string should return true
+=======
+	//Test setting and getting description for room
+>>>>>>> 039a19ca9308aa705816bf801a67162c99e30a53
 	@Test
 	public void testDescriptionRoom() {
 		String s = null;
@@ -131,9 +135,14 @@ public class CoffeeMakerQuestTest {
 		Room northRoom = new Room();
 		Room southRoom = new Room();
 		
+<<<<<<< HEAD
 		
 		newRoom.setNorth_room(northRoom, new DoorDescription(""));
 		newRoom.setSouth_room(southRoom, new DoorDescription(""));
+=======
+		newRoom.setNorth_room(northRoom, "");
+		newRoom.setSouth_room(southRoom, "");
+>>>>>>> 039a19ca9308aa705816bf801a67162c99e30a53
 		
 		Room n = newRoom.moveNorth();
 		Room s = newRoom.moveSouth();
@@ -336,6 +345,7 @@ public class CoffeeMakerQuestTest {
 		System.out.println(test.getCurrentRoom());
 		String[] input = {"N","S","I","L","H","D"};
 		
+<<<<<<< HEAD
 		Room[] rooms = test.getRooms();
 		for(int j = 0;j<rooms.length;j++) {
 			for(String i:input) {
@@ -344,12 +354,22 @@ public class CoffeeMakerQuestTest {
 				test.setCurrentRoom(rooms[j]);
 				assertEquals(i,s);
 			}
+=======
+		
+		
+		for(String i:input) {
+			
+			String s = test.acceptCommands(i);
+			assertEquals(i,s);
+>>>>>>> 039a19ca9308aa705816bf801a67162c99e30a53
 		}
+
 	}
 	//Test whether command input is unknown
 	//Input to anything else besides "S","I","L","H","D" should return "What?\n"
 	@Test
 	public void testFunUnknownCommand() {
+<<<<<<< HEAD
 		CoffeeMaker2 test = new CoffeeMaker2();
 		test.setupCoffeeGame();
 		System.out.println(test.getCurrentRoom());
@@ -421,6 +441,12 @@ public class CoffeeMakerQuestTest {
 	 
 		
 	}
+=======
+	
+	}
+	
+	
+>>>>>>> 039a19ca9308aa705816bf801a67162c99e30a53
 	//Check that each room in the house has a unique description
 	//Uses hashmap to create a set of description check
 	//Stubbed room to return next room
@@ -449,6 +475,7 @@ public class CoffeeMakerQuestTest {
 		assertEquals(unique, true);
 	}
 	//Check that each room in the house has a unique furnishing
+<<<<<<< HEAD
 	//Uses hashmap to create a furnishing set check
 	//Check if "L" command results in looking for items and adding them to inventory
 		@Test
@@ -482,6 +509,24 @@ public class CoffeeMakerQuestTest {
 				    	System.out.println("You found some sweet sugar!");
 				}
 				    
+=======
+	@Test
+	public void uniqueFurnishings() {
+		
+		CoffeeMaker2 game = new CoffeeMaker2();
+		game.setupCoffeeGame();
+		Room [] rooms = game.getRooms();
+		int index = 0;
+		Room currentRoom = Mockito.mock(Room.class);
+		Mockito.when(currentRoom.moveNorth()).thenReturn(rooms[index]);
+		
+		HashMap <String, Integer> furnishings = new HashMap <String, Integer> ();
+		boolean unique = true;
+		
+		while (index < rooms.length) {
+			if (furnishings.containsKey(currentRoom.getFurnishing())) {
+				unique = false;
+>>>>>>> 039a19ca9308aa705816bf801a67162c99e30a53
 			}
 			
 			System.out.println();
@@ -516,6 +561,7 @@ public class CoffeeMakerQuestTest {
 				currentRoom = currentRoom.moveNorth();
 				index++;
 			}
+<<<<<<< HEAD
 			assertEquals(unique, true);
 
 		}
@@ -546,6 +592,13 @@ public class CoffeeMakerQuestTest {
 		final String correctString = proper.toString();
 		
 		assertEquals(testString, correctString);
+=======
+			currentRoom = currentRoom.moveNorth();
+			index++;
+		}
+		assertEquals(unique, true);
+
+>>>>>>> 039a19ca9308aa705816bf801a67162c99e30a53
 	}
 	
 	//Test whether input gets capitalized
@@ -633,5 +686,75 @@ public class CoffeeMakerQuestTest {
 		assertEquals(testRoom.drink(), false);
 		
 	}
+	
+	//Check if "L" command results in looking for items and adding them to inventory
+	@Test
+	public void checkLook() {
+		CoffeeMaker2 game = new CoffeeMaker2();
+		game.setupCoffeeGame();
+		Room [] rooms = game.getRooms();
+		Random rand = new Random();
+		game.setCurrentRoom(rand.nextInt(rooms.length));
+		final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(myOut));
+
+		game.acceptCommands("L");
+		final String testString = myOut.toString();
 		
+		final ByteArrayOutputStream proper = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(proper));
+		
+		Item roomObj = game.getCurrentRoom().getItem();
+		if (roomObj != null) {
+			String name = roomObj.getName();
+			if (name.equals("Nothing"))
+				System.out.println("You don't see anything out of the ordinary.");
+			else {
+				System.out.println("There might be something here...");
+			    if (name.equals("Cream"))  
+			    	System.out.println("You found some creamy cream!");
+			    else if (name.equals("Coffee")) 
+			    	System.out.println("You found some caffeinated coffee.");
+			    else 
+			    	System.out.println("You found some sweet sugar!");
+			}
+			    
+		}
+		
+		System.out.println();
+		
+		final String correctString = proper.toString();
+		
+		assertEquals(testString, correctString);
+	}
+	
+	//Check if "H" command results in showing a listing of possible commands and
+	//what their effects are
+	@Test
+	public void checkHelp() {
+		CoffeeMaker2 game = new CoffeeMaker2();
+		game.setupCoffeeGame();
+		final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(myOut));
+
+		game.acceptCommands("H");
+		final String testString = myOut.toString();
+		
+		final ByteArrayOutputStream proper = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(proper));
+		
+		System.out.println("Commands to play the game (case-insensitive): ");
+		System.out.println("---------------------------");
+		System.out.println("Enter \"N\" to go north.");
+		System.out.println("Enter \"S\" to go south.");
+		System.out.println("Enter \"L\" to look for items in the room.");
+		System.out.println("Enter \"I\" to check your inventory.");
+		System.out.println("Enter \"H\" to see the help menu again.");
+		System.out.println("Enter \"D\" to drink.");
+		System.out.println(); 
+		final String correctString = proper.toString();
+		
+		assertEquals(testString, correctString);
+	}
+
 }
