@@ -320,6 +320,63 @@ public class CoffeeMakerQuestTest {
 	public void testFunUnknownCommand() {
 	
 	}
+	
+	//Check for command "I" to show inventory,
+	// "L" to check the room for items, and 
+	// "H" for a help menu.
+	@Test
+	public void checkCommands() {
+		CoffeeMaker2 game = new CoffeeMaker2();
+		game.setupCoffeeGame();
+		assertEquals(game.acceptCommands("I"), "I");
+		assertEquals(game.acceptCommands("L"), "L");
+		assertEquals(game.acceptCommands("H"), "H");
+	}
+	
+	//Check that each room in the house has a unique description
+	@Test
+	public void uniqueDescriptions() {
+		CoffeeMaker2 game = new CoffeeMaker2();
+		game.setupCoffeeGame();
+		Room currentRoom = game.getCurrentRoom();
+		
+		HashMap <String, Integer> descriptions = new HashMap <String, Integer> ();
+		boolean unique = true;
+		
+		while (currentRoom.moveNorth() != null) {
+			if (descriptions.containsKey(currentRoom.getDescription())) {
+				unique = false;
+			}
+			else {
+				descriptions.put(currentRoom.getDescription(), 1);
+			}
+			currentRoom = currentRoom.moveNorth();
+		}
+		assertEquals(unique, true);
+	}
+	
+	//Check that each room in the house has a unique furnishing
+	@Test
+	public void uniqueFurnishings() {
+		CoffeeMaker2 game = new CoffeeMaker2();
+		game.setupCoffeeGame();
+		Room currentRoom = game.getCurrentRoom();
+		
+		HashMap <String, Integer> furnishings = new HashMap <String, Integer> ();
+		boolean unique = true;
+		
+		while (currentRoom.moveNorth() != null) {
+			if (furnishings.containsKey(currentRoom.getFurnishing())) {
+				unique = false;
+			}
+			else {
+				furnishings.put(currentRoom.getFurnishing(), 1);
+			}
+			currentRoom = currentRoom.moveNorth();
+		}
+		assertEquals(unique, true);
+	}
+	
 	/*
 	//Test whether the system shall treat inputs as case insensitive
 	@Test 
