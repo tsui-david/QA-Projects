@@ -87,7 +87,7 @@ public class CoffeeMaker {
 			
 			else if (command.equals("S")) {
 				if(currentRoom.moveSouth() != null)
-					currentRoom = currentRoom.moveNorth();
+					currentRoom = currentRoom.moveSouth();
 				return "S";
 			}
 			
